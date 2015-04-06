@@ -1,0 +1,29 @@
+{
+  "name": "barcli",
+  "version": "0.0.1",
+  "description": "A simple tool for diplaying real time bar graphs in the console",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dtex/barcli"
+  },
+  "keywords": [
+    "bar",
+    "graph",
+    "chart",
+    "console",
+    "cli"
+  ],
+  "author": "Donovan Buck <donovan@donovan.bz>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dtex/barcli/issues"
+  },
+  "homepage": "https://github.com/dtex/barcli",
+  "dependencies": {
+    "chalk": "^1.0.0"
+  }
+}
