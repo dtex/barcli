@@ -2,6 +2,7 @@
 Barcli is a **simple** tool for displaying real time bar graphs in the console.
 
 <caption>Screenshot of Leap Motion Controller example</caption>
+
 ![screen shot 2015-04-05 at 10 46 51 pm](https://cloud.githubusercontent.com/assets/854911/7000356/ad911400-dbe5-11e4-8cf0-4e485c84aae9.png)
 
 
