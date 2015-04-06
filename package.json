@@ -1,6 +1,6 @@
 {
   "name": "barcli",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A simple tool for displaying real time bar graphs in the console",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,9 @@
     "cli"
   ],
   "author": "Donovan Buck <donovan@donovan.bz>",
+  "contributors": [
+    { "name": "David Resseguie", "email": "<david@resseguie.com>" }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dtex/barcli/issues"
