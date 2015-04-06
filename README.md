@@ -46,6 +46,8 @@ graph.update(100); // Sets bar to 100%
 
 **inputRange** (Array) - The upper and lower limits for input values. This will be mapped to your bar length (Default: [0, 1])
 
+**constrain** (Boolean) - Constrains displayed input value to given inputRange (Default: false)
+
 **width** (Integer) - The length of the bar in terminal characters (Default: 80)
 
 **color** (String) - Colors will be assigned automatically, but you can override with your preference. Valid values are "red", "green", "yellow", "blue", "magenta", "cyan" or "white".
