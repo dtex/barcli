@@ -1,7 +1,9 @@
 # barcli [bahrk-lee]
 A **simple** tool for displaying real time bar graphs in the console.
 
-I needed a way to visualize Johnny-Five sensor data quickly and easily. Multiple instances of barcli can be stacked to show multiple axes, sensors or other data sources.
+I needed a way to visualize Johnny-Five sensor data quickly and easily. console.log is lame and hard to read if you have more than one datapoint to track.
+
+Multiple instances of barcli can be stacked to show multiple axes, sensors or other data sources in an easy to read horizontal bar graph.
 
 ### Installation
 ````bash
