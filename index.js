@@ -4,7 +4,7 @@ var currentPosition = 0;
 var colors = ["red", "green", "yellow", "blue", "magenta", "cyan", "white"];
 var maxLabelLength = 0;
 
-// fmap() and contrain() are lifted from Rick Waldron's awesome
+// fmap() and constrain() are lifted from Rick Waldron's awesome
 // Johnny-Five library https://github.com/rwaldron/johnnny-five
 fmap = function(value, fromLow, fromHigh, toLow, toHigh) {
   return (value - fromLow) * (toHigh - toLow) /
@@ -30,6 +30,7 @@ function Barcli(opts) {
   this.width = opts.width || 80;
   this.color = opts.color || colors[this.index % colors.length];
   this.label = opts.label || "Input " + String(this.index + 1);
+  this.constrain = !!opts.constrain || false;
 
   // So we can left align all the graphs
   if (this.label.length > maxLabelLength) {
@@ -60,7 +61,11 @@ Barcli.prototype.update = function(data) {
   var bar = "", postbar = "";
 
   var raw = data;
+
   // Map and constrain the input values
+  if (this.constrain) {
+    raw = constrain(raw, this.inputRange[0], this.inputRange[1]);
+  }
   data = fmap(data, this.inputRange[0], this.inputRange[1], 0, this.width);
   data = constrain(data, 0, this.width);
 
