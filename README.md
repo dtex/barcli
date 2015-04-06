@@ -6,7 +6,7 @@ Barcli is a **simple** tool for displaying real time bar graphs in the console.
 ![screen shot 2015-04-05 at 10 46 51 pm](https://cloud.githubusercontent.com/assets/854911/7000356/ad911400-dbe5-11e4-8cf0-4e485c84aae9.png)
 
 
-I needed a way to visualize Johnny-Five sensor data quickly and easily. console.log is lame and hard to read if you have more than one datapoint to track.
+I needed a way to visualize Johnny-Five sensor data quickly and easily. console.log is hard to read, especially if you have more than one datapoint to track.
 
 Multiple instances of barcli can be stacked to show multiple axes, sensors or other data sources in an easy to read horizontal bar graph.
 
@@ -42,11 +42,11 @@ graph.update(100); // Sets bar to 100%
 
 ### Configuration Options
 
-**label** (String) - Label for the bar graph. Any length is fine, but make sure it will fit in your terminal window along with the bar graph.
+**label** (String) - Label for the bar graph. Any length is fine, but make sure it will fit in your terminal window along with the bar graph (Default: "Input n")
 
-**inputRange** (Array) - The upper and lower limits for input values. This will be mapped to your bar length.
+**inputRange** (Array) - The upper and lower limits for input values. This will be mapped to your bar length (Default: [0, 1])
 
-**width** (Integer) - The length of the bar in terminal characters.
+**width** (Integer) - The length of the bar in terminal characters (Default: 80)
 
 **color** (String) - Colors will be assigned automatically, but you can override with your preference. Valid values are "red", "green", "yellow", "blue", "magenta", "cyan" or "white".
 
