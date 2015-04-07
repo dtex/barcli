@@ -82,10 +82,17 @@ Barcli.prototype.update = function(data) {
   // Hide the cursor, put it on the correct line and clear right
   process.stdout.write("\033[?25l\033["+String(this.index+1)+";" + String(maxLabelLength + 4) + "H\033[K");
 
-  // Ouput the bar with the raw data value on right
+  // Ouput the bar
   process.stdout.write(chalk[this.color].inverse(bar));
   process.stdout.write(chalk[this.color](postbar));
-  process.stdout.write(chalk.white("| " + raw));
+  process.stdout.write(chalk.white("| "));
+
+  // Output the raw data value. In red if outside the range
+  if (raw >= this.inputRange[0] && raw <= this.inputRange[1]) {
+    process.stdout.write(chalk.white(raw));
+  } else {
+    process.stdout.write(chalk.red(raw));
+  }
 
   // Move the cursor to the end and make it visible again
   process.stdout.write("\033["+String(barclis.length + 1)+";0H\033[K\033[?25h");
