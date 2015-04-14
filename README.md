@@ -46,7 +46,11 @@ graph.update(100); // Sets bar to 100%
 
 **inputRange** (Array) - The upper and lower limits for input values. This will be mapped to your bar length (Default: [0, 1])
 
+**precision** (Integer) - The number of digits after the decimal point to display (Default: 0)
+
 **constrain** (Boolean) - Constrains displayed input value to given inputRange (Default: false)
+
+**percent** (Boolean) - Displays the input value as a percentage of the inputRange (Default: false)
 
 **width** (Integer) - The length of the bar in terminal characters (Default: 80)
 

@@ -30,7 +30,9 @@ function Barcli(opts) {
   this.width = opts.width || 80;
   this.color = opts.color || colors[this.index % colors.length];
   this.label = opts.label || "Input " + String(this.index + 1);
+  this.percent = opts.percent || false;
   this.constrain = !!opts.constrain || false;
+  this.precision = opts.precision || 0;
 
   // So we can left align all the graphs
   if (this.label.length > maxLabelLength) {
@@ -58,14 +60,11 @@ function Barcli(opts) {
 }
 
 Barcli.prototype.update = function(data) {
-  var bar = "", postbar = "";
+  var prepend = "", append = "", bar = "", postbar = "";
 
   var raw = data;
 
   // Map and constrain the input values
-  if (this.constrain) {
-    raw = constrain(raw, this.inputRange[0], this.inputRange[1]);
-  }
   data = fmap(data, this.inputRange[0], this.inputRange[1], 0, this.width);
   data = constrain(data, 0, this.width);
 
@@ -87,12 +86,27 @@ Barcli.prototype.update = function(data) {
   process.stdout.write(chalk[this.color](postbar));
   process.stdout.write(chalk.white("| "));
 
-  // Output the raw data value. In red if outside the range
-  if (raw >= this.inputRange[0] && raw <= this.inputRange[1]) {
-    process.stdout.write(chalk.white(raw));
-  } else {
-    process.stdout.write(chalk.red(raw));
+  // Output the raw data value in red if outside the range
+  var color = (raw >= this.inputRange[0] && raw <= this.inputRange[1]) ? "white" : "red";
+
+  if (raw > this.inputRange[1]) {
+    prepend = "> ";
   }
+
+  if (raw < this.inputRange[0]) {
+    prepend = "< ";
+  }
+
+  if (this.constrain) {
+    raw = constrain(raw, this.inputRange[0], this.inputRange[1]);
+  }
+
+  if (this.percent) {
+    raw = fmap(raw, this.inputRange[0], this.inputRange[1], 0, 100);
+    append = "%";
+  }
+
+  process.stdout.write(chalk[color](prepend + String(raw.toFixed(this.precision)) + append));
 
   // Move the cursor to the end and make it visible again
   process.stdout.write("\033["+String(barclis.length + 1)+";0H\033[K\033[?25h");
