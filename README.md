@@ -44,7 +44,9 @@ graph.update(100); // Sets bar to 100%
 
 **label** (String) - Label for the bar graph. Any length is fine, but make sure it will fit in your terminal window along with the bar graph (Default: "Input n")
 
-**inputRange** (Array) - The upper and lower limits for input values. This will be mapped to your bar length (Default: [0, 1])
+**range** (Array) - The upper and lower limits for input values. This will be mapped to your bar length. One or both values can be set to null and the range will be found automatically (Default: [null, null])
+
+**autoRange** (Boolean) - Grow the range to include the minimum and maximum values passed in calls to update() (Default: false. If no range is passed or null is passed then this defaults to true)
 
 **precision** (Integer) - The number of digits after the decimal point to display (Default: 0)
 

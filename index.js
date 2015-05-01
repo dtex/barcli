@@ -25,14 +25,23 @@ function Barcli(opts) {
     opts = {};
   }
 
+  if (!opts.range && opts.inputRange) {
+    opts.range = opts.inputRange;
+  }
+
   this.index = barclis.length;
-  this.inputRange = opts.range || [0, 1];
+  this.autoRange = opts.autoRange || false;
+  this.inputRange = opts.range || [null, null];
   this.width = opts.width || 80;
   this.color = opts.color || colors[this.index % colors.length];
   this.label = opts.label || "Input " + String(this.index + 1);
   this.percent = opts.percent || false;
   this.constrain = !!opts.constrain || false;
   this.precision = opts.precision || 0;
+
+  if (!opts.range || opts.range[0] === null || opts.range[1] === null) {
+    this.autoRange = true;
+  }
 
   // So we can left align all the graphs
   if (this.label.length > maxLabelLength) {
@@ -63,6 +72,18 @@ Barcli.prototype.update = function(data) {
   var prepend = "", append = "", bar = "", postbar = "";
 
   var raw = data;
+
+  if (this.autoRange) {
+    if (this.inputRange[0] === null || data < this.inputRange[0]) {
+      this.inputRange[0] = data;
+    }
+
+    if (this.inputRange[1] === null || data > this.inputRange[1]) {
+      this.inputRange[1] = data;
+    }
+
+  }
+
 
   // Map and constrain the input values
   data = fmap(data, this.inputRange[0], this.inputRange[1], 0, this.width);
