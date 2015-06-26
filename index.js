@@ -1,7 +1,7 @@
 var chalk = require("chalk");
 var barclis = [];
 var currentPosition = 0;
-var colors = ["red", "orange", "yellow", "green", "blue", "violet", "magenta", "cyan", "white"];
+var colors = ["red", "green", "yellow", "blue", "magenta", "cyan", "white"];
 var maxLabelLength = 0;
 
 // fmap() and constrain() are lifted from Rick Waldron's awesome
