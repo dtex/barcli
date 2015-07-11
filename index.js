@@ -53,30 +53,19 @@ function Barcli(opts) {
     maxLabelLength = this.label.length;
   }
 
-  this.width = opts.width || 80;
-
   barclis.push(this);
 
-
-  // Update our labels so the formatting is consistent
-  barclis.forEach(function(barcli, index) {
-
-    // Make sure the labels are laft padded with spaces
-    while (barcli.label.length < maxLabelLength) {
-      barcli.label = " " + barcli.label;
-    }
-
-    // Output the label
-    process.stdout.write("\033["+String(barcli.index+1)+";0H");
-    process.stdout.write(chalk[barcli.color](barcli.label + ": "));
-    process.stdout.write(chalk.white("|\n"));
-
-  });
+  resize(opts.width || process.stdout.columns);
 
 }
 
 Barcli.prototype.update = function(data) {
   var prepend = "", append = "", bar = "", postbar = "";
+
+  if (String(data).length > maxValueLength) {
+      maxValueLength = String(data).length;
+      resize(process.stdout.columns);
+  }
 
   var raw = data;
 
@@ -141,5 +130,29 @@ Barcli.prototype.update = function(data) {
 
 // Clear the console and hide the cursor
 process.stdout.write("\033[2J");
+
+process.stdout.on('resize', function() {
+  resize(process.stdout.columns);
+});
+
+var resize = function(size) {
+
+  // Update our labels so the formatting is consistent
+  barclis.forEach(function(barcli, index) {
+
+    // Make sure the labels are laft padded with spaces
+    while (barcli.label.length < maxLabelLength) {
+      barcli.label = " " + barcli.label;
+    }
+
+    barcli.width = size - maxLabelLength - maxValueLength - 10;
+
+    // Output the label
+    process.stdout.write("\033["+String(barcli.index+1)+";0H");
+    process.stdout.write(chalk[barcli.color](barcli.label + ": "));
+    process.stdout.write(chalk.white("|\n"));
+
+  });
+};
 
 module.exports = Barcli;
