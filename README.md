@@ -98,13 +98,12 @@ var palmZ = new Barcli({label: "Palm Z", range: [-500, 500]});
 Leap.loop({enableGestures: true}, function(frame) {
 
   if (frame.hands.length === 1) {
-    palmX.update(frame.hands[0].palmPosition[1]);
-    palmY.update(frame.hands[0].palmPosition[0]);
+    palmX.update(frame.hands[0].palmPosition[0]);
+    palmY.update(frame.hands[0].palmPosition[1]);
     palmZ.update(frame.hands[0].palmPosition[2]);
   }
 
 });
-
 ````
 
 #### A Barcli Clock
