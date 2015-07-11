@@ -3,7 +3,7 @@ var barclis = [];
 var currentPosition = 0;
 var colors = ["red", "green", "yellow", "blue", "magenta", "cyan", "white"];
 var maxLabelLength = 0;
-var maxPrecision = 0;
+var maxValueLength = 0;
 
 // fmap() and constrain() are lifted from Rick Waldron's awesome
 // Johnny-Five library https://github.com/rwaldron/johnnny-five
@@ -43,16 +43,17 @@ function Barcli(opts) {
     this.autoRange = true;
   }
 
-  // So we can left align all the graphs
-  if (this.precision > maxPrecision) {
-    maxPrecision = this.precision;
+  // So we can avoid wrapping
+  if (this.precision > maxValueLength) {
+    maxValueLength = this.precision;
   }
 
+  // So we can left align all the graphs
   if (this.label.length > maxLabelLength) {
     maxLabelLength = this.label.length;
   }
 
-  this.width = opts.width || process.stdout.columns - maxLabelLength - maxPrecision - 12;
+  this.width = opts.width || 80;
 
   barclis.push(this);
 
@@ -89,7 +90,6 @@ Barcli.prototype.update = function(data) {
     }
 
   }
-
 
   // Map and constrain the input values
   data = fmap(data, this.inputRange[0], this.inputRange[1], 0, this.width);
