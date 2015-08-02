@@ -122,7 +122,11 @@ Barcli.prototype.update = function(data) {
     append = "%";
   }
 
-  process.stdout.write(chalk[color](prepend + String(raw.toFixed(this.precision)) + append));
+  if (raw === null) {
+    process.stdout.write(chalk.red(prepend + "null" + append));
+  } else {
+    process.stdout.write(chalk[color](prepend + String(raw.toFixed(this.precision)) + append));
+  }
 
   // Move the cursor to the end and make it visible again
   process.stdout.write("\033["+String(barclis.length + 1)+";0H\033[K\033[?25h");
