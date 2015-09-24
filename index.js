@@ -62,6 +62,8 @@ function Barcli(opts) {
 Barcli.prototype.update = function(data) {
   var prepend = "", append = "", bar = "", postbar = "";
 
+  var type = typeof data;
+
   if (String(data).length > maxValueLength) {
       maxValueLength = String(data).length;
       resize(process.stdout.columns);
@@ -69,63 +71,78 @@ Barcli.prototype.update = function(data) {
 
   var raw = data;
 
-  if (this.autoRange) {
-    if (this.inputRange[0] === null || data < this.inputRange[0]) {
-      this.inputRange[0] = data;
+  if (type === "number") {
+    if (this.autoRange) {
+      if (this.inputRange[0] === null || data < this.inputRange[0]) {
+        this.inputRange[0] = data;
+      }
+
+      if (this.inputRange[1] === null || data > this.inputRange[1]) {
+        this.inputRange[1] = data;
+      }
     }
 
-    if (this.inputRange[1] === null || data > this.inputRange[1]) {
-      this.inputRange[1] = data;
+    // Map and constrain the input values
+    data = fmap(data, this.inputRange[0], this.inputRange[1], 0, this.width);
+    data = constrain(data, 0, this.width);
+
+    // Make our "bar"
+    for (i = 0; i < data; i++) {
+      bar = bar + " ";
     }
 
+    // Make the space after our bar
+    for (i = data; i <= this.width; i++) {
+      postbar += " ";
+    }
   }
 
-  // Map and constrain the input values
-  data = fmap(data, this.inputRange[0], this.inputRange[1], 0, this.width);
-  data = constrain(data, 0, this.width);
-
-  // Make our "bar"
-  for (var i = 0; i < data; i++) {
-    bar = bar + " ";
-  }
-
-  // Make the space after our bar
-  for (i = data; i <= this.width; i++) {
-    postbar += " ";
+  if (type === "string") {
+    bar = data;
+    for (i = bar.length; i <= this.width; i++) {
+      postbar += " ";
+    }
   }
 
   // Hide the cursor, put it on the correct line and clear right
   process.stdout.write("\033[?25l\033["+String(this.index+1)+";" + String(maxLabelLength + 4) + "H\033[K");
 
   // Ouput the bar
-  process.stdout.write(chalk[this.color].inverse(bar));
+  if (type === "number") {
+    process.stdout.write(chalk[this.color].inverse(bar));
+  } else {
+    process.stdout.write(chalk[this.color](bar));
+  }
+
   process.stdout.write(chalk[this.color](postbar));
   process.stdout.write(chalk.white("| "));
 
-  // Output the raw data value in red if outside the range
-  var color = (raw >= this.inputRange[0] && raw <= this.inputRange[1]) ? "white" : "red";
+  if (type === "number") {
+    // Output the raw data value in red if outside the range
+    var color = (raw >= this.inputRange[0] && raw <= this.inputRange[1]) ? "white" : "red";
 
-  if (raw > this.inputRange[1]) {
-    prepend = "> ";
-  }
+    if (raw > this.inputRange[1]) {
+      prepend = "> ";
+    }
 
-  if (raw < this.inputRange[0]) {
-    prepend = "< ";
-  }
+    if (raw < this.inputRange[0]) {
+      prepend = "< ";
+    }
 
-  if (this.constrain) {
-    raw = constrain(raw, this.inputRange[0], this.inputRange[1]);
-  }
+    if (this.constrain) {
+      raw = constrain(raw, this.inputRange[0], this.inputRange[1]);
+    }
 
-  if (this.percent) {
-    raw = fmap(raw, this.inputRange[0], this.inputRange[1], 0, 100);
-    append = "%";
-  }
+    if (this.percent) {
+      raw = fmap(raw, this.inputRange[0], this.inputRange[1], 0, 100);
+      append = "%";
+    }
 
-  if (raw === null) {
-    process.stdout.write(chalk.red(prepend + "null" + append));
-  } else {
-    process.stdout.write(chalk[color](prepend + String(raw.toFixed(this.precision)) + append));
+    if (raw === null) {
+      process.stdout.write(chalk.red(prepend + "null" + append));
+    } else {
+      process.stdout.write(chalk[color](prepend + String(raw.toFixed(this.precision)) + append));
+    }
   }
 
   // Move the cursor to the end and make it visible again

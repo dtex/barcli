@@ -25,6 +25,7 @@ var graph = new Barcli();
 
 graph.update(0.25); // Sets bar to 25%
 graph.update(1.0); // Sets bar to 100%
+graph.update("The state of something"); // Replaces bar with the string
 ````
 
 Optionally, you can pass configuration parameters in an object.
@@ -38,6 +39,7 @@ var graph = new Barcli({
 
 graph.update(25); // Sets bar to 25%
 graph.update(100); // Sets bar to 100%
+graph.update("The state of something"); // Replaces bar with the string
 ````
 
 ### Configuration Options
@@ -114,6 +116,7 @@ var hours = new Barcli({ label: "Hour", range: [0, 23]});
 var minutes = new Barcli({ label: "Minute", range: [0, 59]});
 var seconds = new Barcli({ label: "Second", range: [0, 59]});
 var milliseconds = new Barcli({ label: "Millisecond", range: [0, 999]});
+var state = new Barcli({label: "Clock State", type: "string"});
 
 var intervalID = GLOBAL.setInterval(function() {
 
@@ -123,6 +126,7 @@ var intervalID = GLOBAL.setInterval(function() {
   minutes.update(now.getMinutes());
   seconds.update(now.getSeconds());
   milliseconds.update(now.getMilliseconds());
+  state.update(now.getSeconds() % 2 ? "Tick" : "Tock");
 
 }, 12);
 
