@@ -25,7 +25,6 @@ var graph = new Barcli();
 
 graph.update(0.25); // Sets bar to 25%
 graph.update(1.0); // Sets bar to 100%
-graph.update("The state of something"); // Replaces bar with the string
 ````
 
 Optionally, you can pass configuration parameters in an object.
@@ -39,8 +38,9 @@ var graph = new Barcli({
 
 graph.update(25); // Sets bar to 25%
 graph.update(100); // Sets bar to 100%
-graph.update("The state of something"); // Replaces bar with the string
 ````
+
+Pro Tip: If you want to display the state of something as a string instead of a bar, just pass the string like this: ```graph.update("Cooking with gas");``` Barcli will know what to do with it.
 
 ### Configuration Options
 
