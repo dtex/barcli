@@ -153,6 +153,8 @@ Barcli.prototype.update = function(data) {
   process.stdout.write("\033["+String(barclis.length + 1)+";0H\033[K\033[?25h");
 };
 
+Barcli.prototype.set = Barcli.prototype.update;
+
 // Clear the console and hide the cursor
 process.stdout.write("\033[2J");
 
