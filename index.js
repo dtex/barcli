@@ -62,8 +62,12 @@ function Barcli(opts) {
 Barcli.prototype.update = function(data) {
   var prepend = "", append = "", bar = "", postbar = "";
 
-  var type = typeof data;
+  if (Array.isArray(data)) {
+    data = data[0];
+  }
 
+  var type = typeof data;
+  
   if (String(data).length > maxValueLength) {
       maxValueLength = String(data).length;
       resize(process.stdout.columns);
