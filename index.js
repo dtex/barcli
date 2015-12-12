@@ -7,12 +7,12 @@ var maxValueLength = 0;
 
 // fmap() and constrain() are lifted from Rick Waldron's awesome
 // Johnny-Five library https://github.com/rwaldron/johnnny-five
-fmap = function(value, fromLow, fromHigh, toLow, toHigh) {
+var fmap = function(value, fromLow, fromHigh, toLow, toHigh) {
   return (value - fromLow) * (toHigh - toLow) /
     (fromHigh - fromLow) + toLow;
 };
 
-constrain = function(value, lower, upper) {
+var constrain = function(value, lower, upper) {
   return Math.min(upper, Math.max(lower, value));
 };
 
