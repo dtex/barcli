@@ -1,10 +1,7 @@
+<img width="50%" align="right" src="https://cloud.githubusercontent.com/assets/854911/11871688/bbc225b2-a496-11e5-90f9-7a28631dd42b.png" />
+
 # barcli [bahrk-lee]
 Barcli is a **simple** tool for displaying real time bar graphs in the console.
-
-<caption>Screenshot of Leap Motion Controller example</caption>
-
-![screen shot 2015-04-05 at 10 46 51 pm](https://cloud.githubusercontent.com/assets/854911/7000356/ad911400-dbe5-11e4-8cf0-4e485c84aae9.png)
-
 
 I needed a way to visualize Johnny-Five sensor data quickly and easily. console.log is hard to read, especially if you have more than one datapoint to track.
 
@@ -107,6 +104,9 @@ Leap.loop({enableGestures: true}, function(frame) {
 
 });
 ````
+<caption>Screenshot of Leap Motion Controller example</caption>
+
+![screen shot 2015-04-05 at 10 46 51 pm](https://cloud.githubusercontent.com/assets/854911/7000356/ad911400-dbe5-11e4-8cf0-4e485c84aae9.png)
 
 #### A Barcli Clock
 ````js
