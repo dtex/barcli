@@ -77,11 +77,11 @@ Barcli.prototype.update = function(data) {
 
   if (type === "number") {
     if (this.autoRange) {
-      if (this.inputRange[0] === null || data < this.inputRange[0]) {
+      if (isNaN(this.inputRange[0]) || data < this.inputRange[0]) {
         this.inputRange[0] = data;
       }
 
-      if (this.inputRange[1] === null || data > this.inputRange[1]) {
+      if (isNaN(this.inputRange[1]) || data > this.inputRange[1]) {
         this.inputRange[1] = data;
       }
     }
