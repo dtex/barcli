@@ -22,6 +22,10 @@ function Barcli(opts) {
     return new Barcli(opts);
   }
 
+  if (barclis.length === 0){
+    clearScreen();
+  }
+
   if (typeof opts === "undefined") {
     opts = {};
   }
@@ -67,7 +71,7 @@ Barcli.prototype.update = function(data) {
   }
 
   var type = typeof data;
-  
+
   if (String(data).length > maxValueLength) {
       maxValueLength = String(data).length;
       resize(process.stdout.columns);
@@ -155,12 +159,17 @@ Barcli.prototype.update = function(data) {
 
 Barcli.prototype.set = Barcli.prototype.update;
 
-// Clear the console and hide the cursor
-process.stdout.write("\033[2J");
+var clearScreen = function() {
 
-process.stdout.on('resize', function() {
-  resize(process.stdout.columns);
-});
+  // Clear the console and hide the cursor
+  process.stdout.write("\033[2J");
+
+  // Redraw on resize event
+  process.stdout.on('resize', function() {
+    resize(process.stdout.columns);
+  });
+
+}
 
 var resize = function(size) {
 

@@ -1,6 +1,6 @@
 {
   "name": "barcli",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "A simple tool for displaying real time bar graphs in the console",
   "main": "index.js",
   "scripts": {
