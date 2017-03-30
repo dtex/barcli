@@ -47,6 +47,8 @@ function Barcli(opts) {
     this.autoRange = true;
   }
 
+  barclis.push(this);
+
   // So we can avoid wrapping
   if (this.precision > maxValueLength) {
     maxValueLength = this.precision;
@@ -57,8 +59,6 @@ function Barcli(opts) {
     maxLabelLength = this.label.length;
   }
 
-  barclis.push(this);
-
   resize(opts.width || process.stdout.columns);
 
 }
@@ -66,6 +66,8 @@ function Barcli(opts) {
 Barcli.prototype.update = function(data) {
   var prepend = "", append = "", bar = "", postbar = "";
 
+  this.data = data;
+  
   if (Array.isArray(data)) {
     data = data[0];
   }
@@ -113,7 +115,7 @@ Barcli.prototype.update = function(data) {
   }
 
   // Hide the cursor, put it on the correct line and clear right
-  process.stdout.write("\033[?25l\033["+String(this.index+1)+";" + String(maxLabelLength + 4) + "H\033[K");
+  process.stdout.write("\033[?25l\033["+String(this.index+1)+";" + String(maxLabelLength + 3) + "H\033[K");
 
   // Ouput the bar
   if (type === "number") {
@@ -185,8 +187,10 @@ var resize = function(size) {
 
     // Output the label
     process.stdout.write("\033["+String(barcli.index+1)+";0H");
-    process.stdout.write(chalk[barcli.color](barcli.label + ": "));
+    process.stdout.write(chalk[barcli.color](barcli.label + ":"));
     process.stdout.write(chalk.white("|\n"));
+
+    barcli.update(barcli.data);
 
   });
 };
