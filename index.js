@@ -66,6 +66,8 @@ function Barcli(opts) {
 Barcli.prototype.update = function(data) {
   var prepend = "", append = "", bar = "", postbar = "";
 
+  this.data = data;
+  
   if (Array.isArray(data)) {
     data = data[0];
   }
@@ -187,6 +189,8 @@ var resize = function(size) {
     process.stdout.write("\033["+String(barcli.index+1)+";0H");
     process.stdout.write(chalk[barcli.color](barcli.label + ": "));
     process.stdout.write(chalk.white("|\n"));
+
+    barcli.update(barcli.data);
 
   });
 };
