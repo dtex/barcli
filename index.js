@@ -108,12 +108,12 @@ Barcli.prototype.update = function(data) {
     data = constrain(data, 0, this.width);
 
     // Make our "bar"
-    for (i = 0; i < data; i++) {
+    for (i = 0; i <= data; i++) {
       bar = bar + " ";
     }
 
     // Make the space after our bar
-    for (i = data; i <= this.width; i++) {
+    for (i = data; i < this.width; i++) {
       postbar += " ";
     }
   }
