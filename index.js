@@ -22,10 +22,6 @@ function Barcli(opts) {
     return new Barcli(opts);
   }
 
-  if (barclis.length === 0){
-    clearScreen();
-  }
-
   if (typeof opts === "undefined") {
     opts = {};
   }
@@ -42,12 +38,11 @@ function Barcli(opts) {
   this.percent = opts.percent || false;
   this.constrain = !!opts.constrain || false;
   this.precision = opts.precision || 0;
+  this.inline = opts.inline || false;
 
   if (!opts.range || opts.range[0] === null || opts.range[1] === null) {
     this.autoRange = true;
   }
-
-  barclis.push(this);
 
   // So we can avoid wrapping
   if (this.precision > maxValueLength) {
@@ -59,12 +54,28 @@ function Barcli(opts) {
     maxLabelLength = this.label.length;
   }
 
+  if (barclis.length === 0 && !this.inline){
+    clearScreen();
+  }
+
+  barclis.push(this);
+
   resize(opts.width || process.stdout.columns);
 
 }
 
+Barcli.halt = function() {
+  barclis.forEach(function(barcli) {
+    barcli.finish();
+  });
+}
+
+Barcli.prototype.finish = function() {
+  process.stdout.write("\n");
+};
+
 Barcli.prototype.update = function(data) {
-  var prepend = "", append = "", bar = "", postbar = "";
+  var prepend = append = bar = postbar = "";
 
   this.data = data;
   
@@ -114,9 +125,20 @@ Barcli.prototype.update = function(data) {
     }
   }
 
-  // Hide the cursor, put it on the correct line and clear right
-  process.stdout.write("\033[?25l\033["+String(this.index+1)+";" + String(maxLabelLength + 3) + "H\033[K");
+  // Hide the cursor
+  process.stdout.write("\033[?25l");
 
+  // Put cursor on the correct line and clear right
+  if (this.inline) {
+    process.stdout.write("\r");
+  } else {
+    process.stdout.write("\033["+String(this.index + 1)+";0H\033[K");
+  }
+
+  // Output the label
+  process.stdout.write(chalk[this.color](this.label+": "));
+  process.stdout.write(chalk.white("|"));
+    
   // Ouput the bar
   if (type === "number") {
     process.stdout.write(chalk[this.color].inverse(bar));
@@ -155,8 +177,8 @@ Barcli.prototype.update = function(data) {
     }
   }
 
-  // Move the cursor to the end and make it visible again
-  process.stdout.write("\033["+String(barclis.length + 1)+";0H\033[K\033[?25h");
+  // Move the cursor to its previous position and make it visible again
+  if (!this.inline) process.stdout.write("\033[?25h");
 };
 
 Barcli.prototype.set = Barcli.prototype.update;
@@ -184,12 +206,6 @@ var resize = function(size) {
     }
 
     barcli.width = size - maxLabelLength - maxValueLength - 10;
-
-    // Output the label
-    process.stdout.write("\033["+String(barcli.index+1)+";0H");
-    process.stdout.write(chalk[barcli.color](barcli.label + ":"));
-    process.stdout.write(chalk.white("|\n"));
-
     barcli.update(barcli.data);
 
   });
