@@ -108,11 +108,12 @@ Barcli.prototype.update = function(data) {
 
     // Map and constrain the input values
     data = fmap(data, this.inputRange[0], this.inputRange[1], 0, this.width);
+    
     data = constrain(data, 0, this.width);
 
     // Make our "bar"
     for (i = 0; i <= data; i++) {
-      bar = bar + " ";
+      bar = bar + "\u2588";
     }
 
     // Make the space after our bar
@@ -144,7 +145,7 @@ Barcli.prototype.update = function(data) {
     
   // Ouput the bar
   if (type === "number") {
-    process.stdout.write(chalk[this.color].inverse(bar));
+    process.stdout.write(chalk[this.color](bar));
   } else {
     process.stdout.write(chalk[this.color](bar));
   }
