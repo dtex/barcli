@@ -215,6 +215,8 @@ var resize = function() {
     barcli.width = windowWidth - maxLabelLength - maxValueLength - 10;
     barcli.update(barcli.data);
 
+    barcli.update(barcli.data);
+
   });
 };
 
