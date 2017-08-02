@@ -55,6 +55,8 @@ Pro Tip: If you want to display the state of something as a string instead of a 
 
 **color** (String) - Colors will be assigned automatically, but you can override with your preference. Valid values are "red", "green", "yellow", "blue", "magenta", "cyan" or "white".
 
+**inline** (Boolean) - When true, Barcli will not clear the console. This is ideal for single barcli instances that occur inline and maintain stdout output before and after the bar (i.e. an install or large data download). Note that you must call ```barcli.finish()``` to bump the cursor down when done with the bar graph.
+
 ### Examples
 
 #### Johnny-Five Sensor Input
