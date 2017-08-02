@@ -4,6 +4,7 @@ var currentPosition = 0;
 var colors = ["red", "green", "yellow", "blue", "magenta", "cyan", "white"];
 var maxLabelLength = 0;
 var maxValueLength = 0;
+var windowWidth = process.stdout.columns || 80;
 
 // fmap() and constrain() are lifted from Rick Waldron's awesome
 // Johnny-Five library https://github.com/rwaldron/johnnny-five
@@ -39,6 +40,7 @@ function Barcli(opts) {
   this.constrain = !!opts.constrain || false;
   this.precision = opts.precision || 0;
   this.inline = opts.inline || false;
+  this.width = opts.width || windowWidth;
 
   if (!opts.range || opts.range[0] === null || opts.range[1] === null) {
     this.autoRange = true;
@@ -60,7 +62,7 @@ function Barcli(opts) {
 
   barclis.push(this);
 
-  resize(opts.width || process.stdout.columns);
+  resize(this.width);
 
 }
 
@@ -87,12 +89,13 @@ Barcli.prototype.update = function(data) {
 
   if (String(data).length > maxValueLength) {
       maxValueLength = String(data).length;
-      resize(process.stdout.columns);
+      resize(this.width);
   }
 
   var raw = data;
 
   if (type === "number") {
+    
     if (this.autoRange) {
       if (isNaN(this.inputRange[0]) || data < this.inputRange[0]) {
         this.inputRange[0] = data;
@@ -178,6 +181,7 @@ Barcli.prototype.update = function(data) {
   }
 
   // Move the cursor to its previous position and make it visible again
+  // process.stdout.write("\033["+position.row+";"+position.column+"H\033[?25h");
   if (!this.inline) process.stdout.write("\033[?25h");
 };
 
@@ -190,13 +194,15 @@ var clearScreen = function() {
 
   // Redraw on resize event
   process.stdout.on('resize', function() {
-    resize(process.stdout.columns);
+    resize();
   });
 
 }
 
-var resize = function(size) {
+var resize = function() {
 
+  windowWidth = process.stdout.columns || 80;
+  
   // Update our labels so the formatting is consistent
   barclis.forEach(function(barcli, index) {
 
@@ -205,7 +211,7 @@ var resize = function(size) {
       barcli.label = " " + barcli.label;
     }
 
-    barcli.width = size - maxLabelLength - maxValueLength - 10;
+    barcli.width = windowWidth - maxLabelLength - maxValueLength - 10;
     barcli.update(barcli.data);
 
   });
