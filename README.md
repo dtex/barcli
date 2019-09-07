@@ -76,10 +76,8 @@ var board = new five.Board().on("ready", function() {
     range: [0, 100]
   });
 
-  sensor.scale([0, 100]);
-
   sensor.on("data", function() {
-    graph.update(this.value);
+    graph.update(sensor.scaleTo([0, 100]););
   });
 });
 
